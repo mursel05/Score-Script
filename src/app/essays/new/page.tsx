@@ -1,7 +1,7 @@
-import { auth } from "@/lib/auth";
+import { auth } from "@/src/lib/auth";
 import { redirect } from "next/navigation";
-import { AppShell } from "@/components/layout/AppShell";
-import { EssayForm } from "@/components/essays/EssayForm";
+import { AppShell } from "@/src/components/layout/AppShell";
+import { EssayForm } from "@/src/components/essays/EssayForm";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +12,6 @@ export default async function NewEssayPage() {
   return (
     <AppShell>
       <div className="max-w-2xl mx-auto px-6 py-8">
-        {/* Back */}
         <Link
           href="/dashboard"
           className="inline-flex items-center gap-1 text-sm text-stone-400 hover:text-stone-700 mb-6 transition-colors"
@@ -22,12 +21,10 @@ export default async function NewEssayPage() {
         </Link>
 
         <div className="fade-up mb-7">
-          <h1 className="font-serif text-3xl text-stone-900 mb-2">
-            New Essay
-          </h1>
+          <h1 className="font-serif text-3xl text-stone-900 mb-2">New Essay</h1>
           <p className="text-sm text-stone-500">
-            Paste your essay below. Up to 500 words. Our AI will evaluate it
-            and return a band score.
+            Paste your essay below. Up to 500 words. Our AI will evaluate it and return a
+            band score.
           </p>
         </div>
 
@@ -36,8 +33,8 @@ export default async function NewEssayPage() {
         </div>
 
         <p className="text-xs text-stone-400 text-center mt-5">
-          Essays are evaluated by Google Gemini against professional criteria.
-          Results typically take 5–15 seconds.
+          Essays are evaluated by Google Gemini against professional criteria. Results
+          typically take 5–15 seconds.
         </p>
       </div>
     </AppShell>

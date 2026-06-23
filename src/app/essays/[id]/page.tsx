@@ -1,7 +1,7 @@
-import { auth } from "@/lib/auth";
+import { auth } from "@/src/lib/auth";
 import { redirect } from "next/navigation";
-import { AppShell } from "@/components/layout/AppShell";
-import { EssayDetailContent } from "@/components/essays/EssayDetailContent";
+import { AppShell } from "@/src/components/layout/AppShell";
+import { EssayDetailContent } from "@/src/components/essays/EssayDetailContent";
 
 export default async function EssayDetailPage({
   params,

@@ -10,10 +10,9 @@ import {
   AlertCircle,
   CheckCircle2,
 } from "lucide-react";
-import { BandScore } from "@/components/ui/BandScore";
-import { Skeleton } from "@/components/ui/Skeleton";
-import { getBandColor, getBandLabel } from "@/types";
-import type { EssayWithEvaluation } from "@/types";
+import { EssayWithEvaluation, getBandColor, getBandLabel } from "@/src/types";
+import { Skeleton } from "../ui/Skeleton";
+import { BandScore } from "../ui/BandScore";
 
 export function EssayDetailContent({ essayId }: { essayId: string }) {
   const [essay, setEssay] = useState<EssayWithEvaluation | null>(null);
@@ -64,7 +63,6 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
-      {/* Back */}
       <Link
         href="/essays"
         className="inline-flex items-center gap-1 text-sm text-stone-400 hover:text-stone-700 mb-6 transition-colors"
@@ -73,7 +71,6 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
         History
       </Link>
 
-      {/* Title */}
       <div className="mb-6 fade-up">
         <h1 className="font-serif text-3xl text-stone-900 mb-3">
           {essay.title}
@@ -90,9 +87,7 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
         </div>
       </div>
 
-      {/* Score + status */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 fade-up fade-up-delay-1">
-        {/* Band score card */}
         <div className="bg-white border border-stone-200 rounded-xl p-6 flex items-center gap-6">
           {band != null ? (
             <BandScore score={band} size="lg" />
@@ -122,7 +117,6 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
           </div>
         </div>
 
-        {/* Status card */}
         <div className="bg-white border border-stone-200 rounded-xl p-6">
           <p className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-4">
             Evaluation Status
@@ -153,7 +147,6 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
         </div>
       </div>
 
-      {/* Essay content */}
       <div className="bg-white border border-stone-200 rounded-xl p-6 fade-up fade-up-delay-2">
         <h2 className="text-sm font-semibold text-stone-800 mb-4">
           Essay Content
@@ -170,7 +163,6 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex gap-3 mt-5">
         <Link
           href="/essays/new"

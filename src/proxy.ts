@@ -5,7 +5,6 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isAuthenticated = !!req.auth?.user;
 
-  // Public routes
   const publicRoutes = ["/", "/login"];
   if (publicRoutes.includes(pathname)) {
     if (isAuthenticated && pathname === "/login") {
@@ -14,12 +13,10 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  // API auth routes — handled by next-auth
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
 
-  // Protected routes
   if (!isAuthenticated) {
     if (pathname.startsWith("/api/")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

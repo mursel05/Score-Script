@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { FileText, Clock, Hash } from "lucide-react";
-import { getBandColor, getBandLabel } from "@/types";
-import type { EssayWithEvaluation } from "@/types";
+import { EssayWithEvaluation, getBandColor, getBandLabel } from "@/src/types";
 
 interface EssayCardProps {
   essay: EssayWithEvaluation;
@@ -26,7 +25,6 @@ export function EssayCard({ essay }: EssayCardProps) {
             </p>
           </div>
 
-          {/* Score badge */}
           <div className="flex-shrink-0 text-center">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg"
@@ -40,7 +38,6 @@ export function EssayCard({ essay }: EssayCardProps) {
           </div>
         </div>
 
-        {/* Meta */}
         <div className="flex items-center gap-4 mt-4 text-xs text-stone-400">
           <span className="flex items-center gap-1">
             <Hash className="w-3 h-3" />

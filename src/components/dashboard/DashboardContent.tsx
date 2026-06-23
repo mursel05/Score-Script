@@ -6,9 +6,8 @@ import { useSession } from "next-auth/react";
 import { FileText, TrendingUp, Award, Plus } from "lucide-react";
 import { StatCard } from "./StatCard";
 import { BandTrendChart } from "./BandTrendChart";
-import { EssayCard } from "@/components/essays/EssayCard";
-import { StatCardSkeleton, EssayCardSkeleton } from "@/components/ui/Skeleton";
-import type { DashboardStats } from "@/types";
+import { DashboardStats } from "@/src/types";
+import { EssayCardSkeleton, StatCardSkeleton } from "../ui/Skeleton";
 
 export function DashboardContent() {
   const { data: session } = useSession();
@@ -26,7 +25,6 @@ export function DashboardContent() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
-      {/* Header */}
       <div className="flex items-start justify-between mb-8 fade-up">
         <div>
           <h1 className="font-serif text-3xl text-stone-900">
@@ -45,7 +43,6 @@ export function DashboardContent() {
         </Link>
       </div>
 
-      {/* Stats row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 fade-up fade-up-delay-1">
         {loading ? (
           <>
@@ -88,9 +85,7 @@ export function DashboardContent() {
         )}
       </div>
 
-      {/* Chart + recent */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 fade-up fade-up-delay-2">
-        {/* Trend chart */}
         <div className="lg:col-span-3 bg-white border border-stone-200 rounded-xl p-5">
           <h2 className="text-sm font-semibold text-stone-800 mb-4">
             Band Score Trend
@@ -102,7 +97,6 @@ export function DashboardContent() {
           )}
         </div>
 
-        {/* Recent essays */}
         <div className="lg:col-span-2 bg-white border border-stone-200 rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-stone-800">Recent</h2>

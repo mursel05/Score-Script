@@ -6,7 +6,6 @@ import { PenLine, BarChart2, Zap, Shield } from "lucide-react";
 export function LandingHero() {
   return (
     <div className="min-h-screen bg-stone-50 paper-bg overflow-hidden">
-      {/* Nav */}
       <nav className="px-6 py-5 flex items-center justify-between max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
           <PenLine className="w-5 h-5 text-orange-700" strokeWidth={1.5} />
@@ -14,13 +13,12 @@ export function LandingHero() {
         </div>
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="text-sm text-stone-600 hover:text-stone-900 px-4 py-2 rounded-lg border border-stone-300 hover:border-stone-400 transition-colors"
+          className="text-sm text-stone-600 cursor-pointer hover:text-stone-900 px-4 py-2 rounded-lg border border-stone-300 hover:border-stone-400 transition-colors"
         >
           Sign in
         </button>
       </nav>
 
-      {/* Hero */}
       <main className="max-w-6xl mx-auto px-6 pt-16 pb-24">
         <div className="max-w-2xl fade-up">
           <div className="inline-flex items-center gap-2 text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 mb-8">
@@ -44,7 +42,7 @@ export function LandingHero() {
 
           <button
             onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-            className="group inline-flex items-center gap-3 bg-stone-900 text-stone-50 px-7 py-3.5 rounded-xl text-sm font-medium hover:bg-stone-800 transition-colors"
+            className="group inline-flex items-center cursor-pointer gap-3 bg-stone-900 text-stone-50 px-7 py-3.5 rounded-xl text-sm font-medium hover:bg-stone-800 transition-colors"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -68,7 +66,6 @@ export function LandingHero() {
           </button>
         </div>
 
-        {/* Feature cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-20 fade-up-delay-1 fade-up">
           {[
             {

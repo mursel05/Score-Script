@@ -1,6 +1,6 @@
 "use client";
 
-import { getBandColor, getBandLabel } from "@/types";
+import { getBandColor, getBandLabel } from "@/src/types";
 
 interface BandScoreProps {
   score: number;
@@ -8,11 +8,7 @@ interface BandScoreProps {
   showLabel?: boolean;
 }
 
-export function BandScore({
-  score,
-  size = "md",
-  showLabel = true,
-}: BandScoreProps) {
+export function BandScore({ score, size = "md", showLabel = true }: BandScoreProps) {
   const color = getBandColor(score);
   const label = getBandLabel(score);
 
@@ -35,7 +31,6 @@ export function BandScore({
           viewBox={`0 0 ${ring} ${ring}`}
           className="-rotate-90"
         >
-          {/* Track */}
           <circle
             cx={ring / 2}
             cy={ring / 2}
@@ -44,7 +39,6 @@ export function BandScore({
             stroke="#e7e5e4"
             strokeWidth={stroke}
           />
-          {/* Progress */}
           <circle
             cx={ring / 2}
             cy={ring / 2}
@@ -59,10 +53,7 @@ export function BandScore({
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span
-            className={`${fontSize} font-bold leading-none`}
-            style={{ color }}
-          >
+          <span className={`${fontSize} font-bold leading-none`} style={{ color }}>
             {score.toFixed(1)}
           </span>
         </div>

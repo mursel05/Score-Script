@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { EssayCard } from "./EssayCard";
-import { EssayCardSkeleton } from "@/components/ui/Skeleton";
-import type { EssayWithEvaluation } from "@/types";
+import { EssayWithEvaluation } from "@/src/types";
+import { EssayCardSkeleton } from "../ui/Skeleton";
 
 interface EssaysResponse {
   essays: EssayWithEvaluation[];
@@ -27,7 +27,6 @@ export function EssaysListContent() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
-      {/* Header */}
       <div className="flex items-start justify-between mb-7 fade-up">
         <div>
           <h1 className="font-serif text-3xl text-stone-900">History</h1>
@@ -44,7 +43,6 @@ export function EssaysListContent() {
         </Link>
       </div>
 
-      {/* Essays */}
       <div className="space-y-3 fade-up fade-up-delay-1">
         {loading ? (
           [...Array(5)].map((_, i) => <EssayCardSkeleton key={i} />)
@@ -67,13 +65,12 @@ export function EssaysListContent() {
         )}
       </div>
 
-      {/* Pagination */}
       {data && data.pagination.pages > 1 && (
         <div className="flex items-center justify-between mt-6">
           <button
             onClick={() => setPage((p) => p - 1)}
             disabled={page === 1}
-            className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center cursor-pointer gap-1 text-sm text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
             Previous
@@ -84,7 +81,7 @@ export function EssaysListContent() {
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={page === data.pagination.pages}
-            className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center cursor-pointer gap-1 text-sm text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             Next
             <ChevronRight className="w-4 h-4" />

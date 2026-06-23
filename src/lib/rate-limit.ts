@@ -3,7 +3,6 @@ interface RateLimitEntry {
   resetAt: number;
 }
 
-// In-memory store — for production, use Redis or Upstash
 const store = new Map<string, RateLimitEntry>();
 
 const WINDOW_MS = 60 * 1000; // 1 minute
@@ -35,7 +34,6 @@ export function checkRateLimit(identifier: string): {
   };
 }
 
-// Clean up expired entries periodically
 if (typeof setInterval !== "undefined") {
   setInterval(() => {
     const now = Date.now();

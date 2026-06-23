@@ -6,7 +6,6 @@ export interface EvaluationResult {
   overallBand: number;
 }
 
-// Default system instruction — users replace this file with their own criteria
 const DEFAULT_SYSTEM_INSTRUCTION = `You are a professional essay evaluator. 
 Evaluate the essay strictly based on the following criteria:
 
@@ -22,7 +21,6 @@ The response must be exactly this structure:
 {"overallBand": <number>}`;
 
 function sanitizeInput(text: string): string {
-  // Remove potential prompt injection patterns
   const injectionPatterns = [
     /ignore\s+(previous|all|above)\s+instructions?/gi,
     /system\s*:\s*/gi,
@@ -72,7 +70,6 @@ Return only: {"overallBand": <number between 0-9 in 0.5 increments>}`;
   const result = await model.generateContent(prompt);
   const responseText = result.response.text().trim();
 
-  // Strip any markdown code fences just in case
   const cleaned = responseText
     .replace(/^```json\s*/i, "")
     .replace(/^```\s*/i, "")
@@ -86,7 +83,6 @@ Return only: {"overallBand": <number between 0-9 in 0.5 increments>}`;
     throw new Error(`Failed to parse Gemini response as JSON: ${cleaned}`);
   }
 
-  // Validate the result
   if (
     typeof parsed.overallBand !== "number" ||
     parsed.overallBand < 0 ||
@@ -97,7 +93,6 @@ Return only: {"overallBand": <number between 0-9 in 0.5 increments>}`;
     );
   }
 
-  // Round to nearest 0.5
   parsed.overallBand = Math.round(parsed.overallBand * 2) / 2;
 
   return parsed;

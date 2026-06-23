@@ -1,7 +1,7 @@
-import { auth } from "@/lib/auth";
+import { DashboardContent } from "@/src/components/dashboard/DashboardContent";
+import { AppShell } from "@/src/components/layout/AppShell";
+import { auth } from "@/src/lib/auth";
 import { redirect } from "next/navigation";
-import { AppShell } from "@/components/layout/AppShell";
-import { DashboardContent } from "@/components/dashboard/DashboardContent";
 
 export default async function DashboardPage() {
   const session = await auth();

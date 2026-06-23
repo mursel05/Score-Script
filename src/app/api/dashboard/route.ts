@@ -1,6 +1,6 @@
+import { auth } from "@/src/lib/auth";
+import { prisma } from "@/src/lib/prisma";
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -32,7 +32,6 @@ export async function GET() {
           evaluations.length
         : null;
 
-    // Build trend data — last 30 evaluations
     const bandTrend = evaluations.slice(-30).map((e) => ({
       date: e.createdAt.toISOString().split("T")[0],
       band: e.overallBand,

@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { evaluateEssay } from "@/lib/gemini";
-import { checkRateLimit } from "@/lib/rate-limit";
-import {
-  createEssaySchema,
-  countWords,
-  validateWordCount,
-} from "@/lib/validations";
+import { auth } from "@/src/lib/auth";
+import { checkRateLimit } from "@/src/lib/rate-limit";
+import { countWords, createEssaySchema } from "@/src/lib/validations";
+import { prisma } from "@/src/lib/prisma";
+import { evaluateEssay } from "@/src/lib/gemini";
+import z from "zod";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,7 +13,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Rate limiting
     const rateLimit = checkRateLimit(`essays:${session.user.id}`);
     if (!rateLimit.allowed) {
       return NextResponse.json(
@@ -36,11 +32,10 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    // Validate input
     const parsed = createEssaySchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Validation failed", details: parsed.error.flatten() },
+        { error: "Validation failed", details: z.treeifyError(parsed.error) },
         { status: 400 }
       );
     }
@@ -48,14 +43,6 @@ export async function POST(req: NextRequest) {
     const { title, content } = parsed.data;
     const wordCount = countWords(content);
 
-    if (!validateWordCount(content)) {
-      return NextResponse.json(
-        { error: `Essay exceeds 500 word limit. Current count: ${wordCount}` },
-        { status: 400 }
-      );
-    }
-
-    // Save essay to database
     const essay = await prisma.essay.create({
       data: {
         userId: session.user.id,
@@ -65,7 +52,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Evaluate with Gemini
     let evaluation = null;
     try {
       const result = await evaluateEssay(content);
@@ -77,7 +63,6 @@ export async function POST(req: NextRequest) {
       });
     } catch (aiError) {
       console.error("AI evaluation failed:", aiError);
-      // Essay was saved — return it without evaluation
       return NextResponse.json(
         {
           essay: { ...essay, evaluation: null, createdAt: essay.createdAt.toISOString() },
@@ -98,10 +83,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("POST /api/essays error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
@@ -143,9 +125,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("GET /api/essays error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
