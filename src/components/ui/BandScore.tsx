@@ -20,7 +20,7 @@ export function BandScore({ score, size = "md", showLabel = true }: BandScorePro
 
   const { ring, stroke, radius, fontSize, labelSize } = sizeConfig[size];
   const circumference = 2 * Math.PI * radius;
-  const progress = (score / 9) * circumference;
+  const progress = (score / 5) * circumference;
 
   return (
     <div className="flex flex-col items-center gap-2">

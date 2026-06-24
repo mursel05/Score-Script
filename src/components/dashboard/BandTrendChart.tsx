@@ -67,8 +67,8 @@ export function BandTrendChart({ data }: BandTrendChartProps) {
           axisLine={false}
         />
         <YAxis
-          domain={[0, 9]}
-          ticks={[0, 3, 4, 5, 6, 7, 8, 9]}
+          domain={[0, 5]}
+          ticks={[0, 1, 2, 3, 4, 5]}
           tick={{ fontSize: 11, fill: "#a8a29e" }}
           tickLine={false}
           axisLine={false}

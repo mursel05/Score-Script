@@ -12,11 +12,6 @@ const config: Config = {
         serif: ["var(--font-serif)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
-      colors: {
-        ink: "#1c1917",
-        paper: "#fafaf9",
-        accent: "#c2410c",
-      },
     },
   },
   plugins: [],

@@ -22,10 +22,7 @@ export default async function NewEssayPage() {
 
         <div className="fade-up mb-7">
           <h1 className="font-serif text-3xl text-stone-900 mb-2">New Essay</h1>
-          <p className="text-sm text-stone-500">
-            Paste your essay below. Up to 500 words. Our AI will evaluate it and return a
-            band score.
-          </p>
+          <p className="text-sm text-stone-500">Paste your essay below.</p>
         </div>
 
         <div className="bg-white border border-stone-200 rounded-2xl p-6 fade-up fade-up-delay-1">
@@ -33,8 +30,8 @@ export default async function NewEssayPage() {
         </div>
 
         <p className="text-xs text-stone-400 text-center mt-5">
-          Essays are evaluated by Google Gemini against professional criteria. Results
-          typically take 5–15 seconds.
+          Essays are evaluated by AI against professional criteria. Results can be used to
+          improve your writing, but they are not a substitute for human feedback.
         </p>
       </div>
     </AppShell>

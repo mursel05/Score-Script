@@ -34,8 +34,6 @@ export function EssayForm() {
       setIsSubmitting(true);
       setErrors({});
 
-      const toastId = toast.loading("Evaluating your essay…");
-
       try {
         const res = await fetch("/api/essays", {
           method: "POST",
@@ -45,7 +43,6 @@ export function EssayForm() {
 
         const data = await res.json();
         if (res.ok) {
-          toast.success("Essay evaluated!", { id: toastId });
           router.push(`/essays/${data.essay.id}`);
           return;
         }
@@ -53,7 +50,7 @@ export function EssayForm() {
           setErrors(data.details.properties);
         }
       } catch (err) {
-        toast.error("Something went wrong", { id: toastId });
+        toast.error("Something went wrong");
       } finally {
         setIsSubmitting(false);
       }

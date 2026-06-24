@@ -3,13 +3,13 @@ import { z } from "zod";
 export const createEssaySchema = z.object({
   title: z
     .string()
-    .min(22, "Title is required")
-    .max(200, "Title must be under 200 characters")
+    .min(1, "Title is required")
+    .max(1000, "Title must be under 1000 characters")
     .transform((s) => s.trim()),
   content: z
     .string()
-    .min(50, "Essay must be at least 50 characters")
-    .max(1000, "Essay must be under 1000 characters")
+    .min(1, "Content is required")
+    .max(5000, "Essay must be under 5000 characters")
     .transform((s) => s.trim()),
 });
 
@@ -24,4 +24,3 @@ export function countWords(text: string): number {
 
 export const MIN_WORD_COUNT = 150;
 export const MAX_WORD_COUNT = 200;
-

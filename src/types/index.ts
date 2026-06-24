@@ -29,40 +29,21 @@ export interface CreateEssayResponse {
   essay: EssayWithEvaluation;
 }
 
-export type BandScore =
-  | 0
-  | 0.5
-  | 1
-  | 1.5
-  | 2
-  | 2.5
-  | 3
-  | 3.5
-  | 4
-  | 4.5
-  | 5
-  | 5.5
-  | 6
-  | 6.5
-  | 7
-  | 7.5
-  | 8
-  | 8.5
-  | 9;
+export type BandScore = 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 
 export function getBandColor(band: number): string {
-  if (band >= 8) return "#22c55e";
-  if (band >= 7) return "#84cc16";
-  if (band >= 6) return "#eab308";
-  if (band >= 5) return "#f97316";
+  if (band >= 5) return "#22c55e";
+  if (band >= 4) return "#84cc16";
+  if (band >= 3) return "#eab308";
+  if (band >= 2) return "#f97316";
   return "#ef4444";
 }
 
 export function getBandLabel(band: number): string {
-  if (band >= 8.5) return "Expert";
-  if (band >= 7.5) return "Very Good";
-  if (band >= 6.5) return "Competent";
-  if (band >= 5.5) return "Modest";
-  if (band >= 4.5) return "Limited";
+  if (band >= 5) return "Expert";
+  if (band >= 4.5) return "Very Good";
+  if (band >= 4) return "Competent";
+  if (band >= 3.5) return "Modest";
+  if (band >= 3) return "Limited";
   return "Developing";
 }

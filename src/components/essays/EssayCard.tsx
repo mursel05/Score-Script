@@ -21,11 +21,11 @@ export function EssayCard({ essay }: EssayCardProps) {
               {essay.title}
             </h3>
             <p className="text-xs text-stone-400 line-clamp-2 leading-relaxed">
-              {essay.content.substring(0, 120)}…
+              {essay.content.substring(0, 300)}
             </p>
           </div>
 
-          <div className="flex-shrink-0 text-center">
+          <div className="shrink-0 text-center">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg"
               style={{ backgroundColor: `${color}15`, color }}

@@ -43,7 +43,7 @@ export function EssaysListContent() {
         </Link>
       </div>
 
-      <div className="space-y-3 fade-up fade-up-delay-1">
+      <div className="flex flex-col gap-4 fade-up fade-up-delay-1">
         {loading ? (
           [...Array(5)].map((_, i) => <EssayCardSkeleton key={i} />)
         ) : data?.essays.length === 0 ? (

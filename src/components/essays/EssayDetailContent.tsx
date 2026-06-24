@@ -3,13 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
-import {
-  ChevronLeft,
-  Hash,
-  Calendar,
-  AlertCircle,
-  CheckCircle2,
-} from "lucide-react";
+import { ChevronLeft, Hash, Calendar, AlertCircle, CheckCircle2 } from "lucide-react";
 import { EssayWithEvaluation, getBandColor, getBandLabel } from "@/src/types";
 import { Skeleton } from "../ui/Skeleton";
 import { BandScore } from "../ui/BandScore";
@@ -48,7 +42,7 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
     return (
       <div className="max-w-3xl mx-auto px-6 py-8">
         <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl p-5">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
           <div>
             <p className="font-medium text-red-800 mb-1">Error</p>
             <p className="text-sm text-red-600">{error || "Essay not found."}</p>
@@ -72,9 +66,7 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
       </Link>
 
       <div className="mb-6 fade-up">
-        <h1 className="font-serif text-3xl text-stone-900 mb-3">
-          {essay.title}
-        </h1>
+        <h1 className="font-serif text-3xl text-stone-900 mb-3">{essay.title}</h1>
         <div className="flex items-center gap-4 text-xs text-stone-400">
           <span className="flex items-center gap-1">
             <Hash className="w-3 h-3" />
@@ -109,7 +101,7 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
                 <p className="text-sm font-medium" style={{ color }}>
                   {getBandLabel(band)}
                 </p>
-                <p className="text-xs text-stone-400 mt-1">out of 9.0</p>
+                <p className="text-xs text-stone-400 mt-1">out of 5.0</p>
               </>
             ) : (
               <p className="text-sm text-stone-400">Evaluation pending</p>
@@ -136,11 +128,7 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
             </div>
             {band != null && essay.evaluation && (
               <p className="text-xs text-stone-400 pl-6">
-                Completed{" "}
-                {format(
-                  new Date(essay.evaluation.createdAt),
-                  "MMM d, yyyy"
-                )}
+                Completed {format(new Date(essay.evaluation.createdAt), "MMM d, yyyy")}
               </p>
             )}
           </div>
@@ -148,15 +136,10 @@ export function EssayDetailContent({ essayId }: { essayId: string }) {
       </div>
 
       <div className="bg-white border border-stone-200 rounded-xl p-6 fade-up fade-up-delay-2">
-        <h2 className="text-sm font-semibold text-stone-800 mb-4">
-          Essay Content
-        </h2>
+        <h2 className="text-sm font-semibold text-stone-800 mb-4">Essay Content</h2>
         <div className="prose prose-sm prose-stone max-w-none">
-          {essay.content.split("\n\n").map((paragraph, i) => (
-            <p
-              key={i}
-              className="text-stone-700 leading-relaxed mb-4 last:mb-0"
-            >
+          {essay.content.split("\n").map((paragraph, i) => (
+            <p key={i} className="text-stone-700 leading-relaxed mb-4 last:mb-0">
               {paragraph}
             </p>
           ))}

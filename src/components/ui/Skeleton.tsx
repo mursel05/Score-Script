@@ -10,7 +10,7 @@ export function EssayCardSkeleton() {
           <Skeleton className="h-4 w-2/3" />
           <Skeleton className="h-3 w-1/3" />
         </div>
-        <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
+        <Skeleton className="h-12 w-12 rounded-full shrink-0" />
       </div>
       <Skeleton className="h-3 w-full mt-4" />
       <Skeleton className="h-3 w-5/6 mt-2" />

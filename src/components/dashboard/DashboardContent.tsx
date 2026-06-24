@@ -27,9 +27,7 @@ export function DashboardContent() {
     <div className="max-w-5xl mx-auto px-6 py-8">
       <div className="flex items-start justify-between mb-8 fade-up">
         <div>
-          <h1 className="font-serif text-3xl text-stone-900">
-            Hello, {firstName}
-          </h1>
+          <h1 className="font-serif text-3xl text-stone-900">Hello, {firstName}</h1>
           <p className="text-stone-500 text-sm mt-1">
             Here&apos;s an overview of your writing progress.
           </p>
@@ -61,11 +59,7 @@ export function DashboardContent() {
             />
             <StatCard
               label="Average Band"
-              value={
-                stats?.averageBand != null
-                  ? stats.averageBand.toFixed(1)
-                  : "—"
-              }
+              value={stats?.averageBand != null ? stats.averageBand.toFixed(1) : "—"}
               icon={Award}
               subtext="Across all essays"
               color="#16a34a"
@@ -87,9 +81,7 @@ export function DashboardContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 fade-up fade-up-delay-2">
         <div className="lg:col-span-3 bg-white border border-stone-200 rounded-xl p-5">
-          <h2 className="text-sm font-semibold text-stone-800 mb-4">
-            Band Score Trend
-          </h2>
+          <h2 className="text-sm font-semibold text-stone-800 mb-4">Band Score Trend</h2>
           {loading ? (
             <div className="skeleton h-48 rounded-lg" />
           ) : (
@@ -126,12 +118,10 @@ export function DashboardContent() {
                     <p className="text-sm font-medium text-stone-800 truncate group-hover:text-orange-700 transition-colors">
                       {essay.title}
                     </p>
-                    <p className="text-xs text-stone-400">
-                      {essay.wordCount} words
-                    </p>
+                    <p className="text-xs text-stone-400">{essay.wordCount} words</p>
                   </div>
                   {essay.evaluation && (
-                    <span className="text-sm font-bold ml-3 text-orange-700 flex-shrink-0">
+                    <span className="text-sm font-bold ml-3 text-orange-700 shrink-0">
                       {essay.evaluation.overallBand.toFixed(1)}
                     </span>
                   )}
