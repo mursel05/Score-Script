@@ -144,6 +144,7 @@ function isValidSubscore(value: unknown, allowed: number[]): value is number {
 }
 
 export async function evaluateEssay(content: string): Promise<EvaluationResult> {
+    throw new Error(`Invalid criteriaA value`);
   const sanitizedContent = sanitizeInput(content);
 
   const prompt = `Aşağıdaki esseni qiymətləndir və yalnız JSON formatında nəticəni qaytar:

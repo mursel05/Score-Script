@@ -6,6 +6,7 @@ import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { EssayCard } from "./EssayCard";
 import { EssayWithEvaluation } from "@/src/types";
 import { EssayCardSkeleton } from "../ui/Skeleton";
+import { fetcher } from "@/src/lib/api";
 
 interface EssaysResponse {
   essays: EssayWithEvaluation[];
@@ -19,8 +20,7 @@ export function EssaysListContent() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/essays?page=${page}&limit=10`)
-      .then((r) => r.json())
+    fetcher(`/essays?page=${page}&limit=10`)
       .then(setData)
       .finally(() => setLoading(false));
   }, [page]);
@@ -29,17 +29,15 @@ export function EssaysListContent() {
     <div className="max-w-3xl mx-auto px-6 py-8">
       <div className="flex items-start justify-between mb-7 fade-up">
         <div>
-          <h1 className="font-serif text-3xl text-stone-900">History</h1>
-          <p className="text-stone-500 text-sm mt-1">
-            All your submitted and evaluated essays.
-          </p>
+          <h1 className="font-serif text-3xl text-stone-900">Tarix</h1>
+          <p className="text-stone-500 text-sm mt-1">Bütün esseləriniz.</p>
         </div>
         <Link
           href="/essays/new"
           className="flex items-center gap-2 bg-stone-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-stone-800 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          New
+          Yeni
         </Link>
       </div>
 
@@ -48,20 +46,16 @@ export function EssaysListContent() {
           [...Array(5)].map((_, i) => <EssayCardSkeleton key={i} />)
         ) : data?.essays.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-stone-400 text-sm mb-4">
-              You haven&apos;t submitted any essays yet.
-            </p>
+            <p className="text-stone-400 text-sm mb-4">Hələki heç bir esse yoxdur.</p>
             <Link
               href="/essays/new"
               className="text-sm text-orange-700 font-medium hover:underline"
             >
-              Submit your first essay →
+              Birinci essenizi göndərin →
             </Link>
           </div>
         ) : (
-          data?.essays.map((essay) => (
-            <EssayCard key={essay.id} essay={essay} />
-          ))
+          data?.essays.map((essay) => <EssayCard key={essay.id} essay={essay} />)
         )}
       </div>
 
@@ -73,17 +67,17 @@ export function EssaysListContent() {
             className="flex items-center cursor-pointer gap-1 text-sm text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Previous
+            Əvvəlki
           </button>
           <span className="text-xs text-stone-400">
-            Page {data.pagination.page} of {data.pagination.pages}
+            Səhifə {data.pagination.page} / {data.pagination.pages}
           </span>
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={page === data.pagination.pages}
             className="flex items-center cursor-pointer gap-1 text-sm text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
-            Next
+            Sonrakı
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>

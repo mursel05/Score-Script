@@ -6,30 +6,50 @@ export async function GET() {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "İstifadəçi təsdiqlənməyib", success: false },
+        { status: 401 }
+      );
     }
 
     const userId = session.user.id;
 
-    const [totalEssays, evaluations, recentEssays] = await prisma.$transaction([
-      prisma.essay.count({ where: { userId } }),
-      prisma.evaluation.findMany({
-        where: { essay: { userId } },
-        orderBy: { createdAt: "asc" },
-        select: { overallBand: true, createdAt: true },
-      }),
-      prisma.essay.findMany({
-        where: { userId },
-        include: { evaluation: true },
-        orderBy: { createdAt: "desc" },
-        take: 5,
-      }),
-    ]);
-
+    const [totalEssays, evaluations, recentBand, recentEssays] =
+      await prisma.$transaction([
+        prisma.essay.count({ where: { userId } }),
+        prisma.evaluation.findMany({
+          where: { essay: { userId } },
+          orderBy: { createdAt: "asc" },
+          select: { overallBand: true, createdAt: true },
+        }),
+        prisma.essay.findFirst({
+          where: {
+            userId,
+            evaluation: {
+              isNot: null,
+            },
+          },
+          select: {
+            evaluation: {
+              select: {
+                overallBand: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }),
+        prisma.essay.findMany({
+          where: { userId },
+          include: { evaluation: true },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        }),
+      ]);
     const averageBand =
       evaluations.length > 0
-        ? evaluations.reduce((sum, e) => sum + e.overallBand, 0) /
-          evaluations.length
+        ? evaluations.reduce((sum, e) => sum + e.overallBand, 0) / evaluations.length
         : null;
 
     const bandTrend = evaluations.slice(-30).map((e) => ({
@@ -38,25 +58,15 @@ export async function GET() {
     }));
 
     return NextResponse.json({
+      success: true,
       totalEssays,
-      averageBand: averageBand ? Math.round(averageBand * 10) / 10 : null,
-      recentEssays: recentEssays.map((e) => ({
-        ...e,
-        createdAt: e.createdAt.toISOString(),
-        evaluation: e.evaluation
-          ? {
-              ...e.evaluation,
-              createdAt: e.evaluation.createdAt.toISOString(),
-            }
-          : null,
-      })),
+      averageBand,
+      recentBand: recentBand?.evaluation?.overallBand ?? null,
+      recentEssays,
       bandTrend,
     });
   } catch (error) {
     console.error("GET /api/dashboard error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server xətası", success: false }, { status: 500 });
   }
 }

@@ -1,11 +1,11 @@
 import { auth } from "@/src/lib/auth";
 import { redirect } from "next/navigation";
 import { AppShell } from "@/src/components/layout/AppShell";
-import { EssayForm } from "@/src/components/essays/EssayForm";
-import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
+import ContactForm from "@/src/components/contact/ContactForm";
 
-export default async function NewEssayPage() {
+export default async function ContactPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -21,19 +21,16 @@ export default async function NewEssayPage() {
         </Link>
 
         <div className="fade-up mb-7">
-          <h1 className="font-serif text-3xl text-stone-900 mb-2">Yeni Esse</h1>
-          <p className="text-sm text-stone-500">Essenizi aşağıya yapışdırın.</p>
+          <h1 className="font-serif text-3xl text-stone-900 mb-2">Əlaqə</h1>
+          <p className="text-sm text-stone-500">
+            Hər hansı sualınız, təklifiniz və ya rəyiniz varsa, aşağıdakı formdan istifadə
+            edərək bizimlə əlaqə saxlaya bilərsiniz. Biz tezliklə sizə cavab verəcəyik.
+          </p>
         </div>
 
         <div className="bg-white border border-stone-200 rounded-2xl p-6 fade-up fade-up-delay-1">
-          <EssayForm />
+          <ContactForm />
         </div>
-
-        <p className="text-xs text-stone-400 text-center mt-5">
-          Esselər AI tərəfindən peşəkar meyarlarla qiymətləndirilir. Nəticələr
-          yazınızı yaxşılaşdırmaq üçün istifadə edilə bilər, lakin insan rəyinin əvəzi
-          deyillər.
-        </p>
       </div>
     </AppShell>
   );

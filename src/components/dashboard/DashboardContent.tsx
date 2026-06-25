@@ -8,6 +8,7 @@ import { StatCard } from "./StatCard";
 import { BandTrendChart } from "./BandTrendChart";
 import { DashboardStats } from "@/src/types";
 import { EssayCardSkeleton, StatCardSkeleton } from "../ui/Skeleton";
+import { fetcher } from "@/src/lib/api";
 
 export function DashboardContent() {
   const { data: session } = useSession();
@@ -15,29 +16,26 @@ export function DashboardContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/dashboard")
-      .then((r) => r.json())
+    fetcher("/dashboard")
       .then(setStats)
       .finally(() => setLoading(false));
   }, []);
 
-  const firstName = session?.user?.name?.split(" ")[0] || "there";
+  const firstName = session?.user?.name?.split(" ")[0] || "İstifadəçi";
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
       <div className="flex items-start justify-between mb-8 fade-up">
         <div>
-          <h1 className="font-serif text-3xl text-stone-900">Hello, {firstName}</h1>
-          <p className="text-stone-500 text-sm mt-1">
-            Here&apos;s an overview of your writing progress.
-          </p>
+          <h1 className="font-serif text-3xl text-stone-900">Salam, {firstName}</h1>
+          <p className="text-stone-500 text-sm mt-1">Yazınızın irəliləməsi icmalı</p>
         </div>
         <Link
           href="/essays/new"
           className="flex items-center gap-2 bg-stone-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-stone-800 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          New Essay
+          Yeni Esse
         </Link>
       </div>
 
@@ -51,28 +49,24 @@ export function DashboardContent() {
         ) : (
           <>
             <StatCard
-              label="Total Essays"
+              label="Esse sayı"
               value={stats?.totalEssays ?? 0}
               icon={FileText}
-              subtext="Checked so far"
+              subtext="Göndərilən"
               color="#c2410c"
             />
             <StatCard
-              label="Average Band"
+              label="Orta Bal"
               value={stats?.averageBand != null ? stats.averageBand.toFixed(1) : "—"}
               icon={Award}
-              subtext="Across all essays"
+              subtext="Bütün esselər üzrə"
               color="#16a34a"
             />
             <StatCard
-              label="Latest Band"
-              value={
-                stats?.recentEssays?.[0]?.evaluation?.overallBand != null
-                  ? stats.recentEssays[0].evaluation!.overallBand.toFixed(1)
-                  : "—"
-              }
+              label="Son Bal"
+              value={stats?.recentBand != null ? stats.recentBand.toFixed(1) : "—"}
               icon={TrendingUp}
-              subtext="Most recent essay"
+              subtext="Ən son esse"
               color="#2563eb"
             />
           </>
@@ -81,7 +75,7 @@ export function DashboardContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 fade-up fade-up-delay-2">
         <div className="lg:col-span-3 bg-white border border-stone-200 rounded-xl p-5">
-          <h2 className="text-sm font-semibold text-stone-800 mb-4">Band Score Trend</h2>
+          <h2 className="text-sm font-semibold text-stone-800 mb-4">İnkişaf</h2>
           {loading ? (
             <div className="skeleton h-48 rounded-lg" />
           ) : (
@@ -91,12 +85,12 @@ export function DashboardContent() {
 
         <div className="lg:col-span-2 bg-white border border-stone-200 rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-stone-800">Recent</h2>
+            <h2 className="text-sm font-semibold text-stone-800">Son Esselər</h2>
             <Link
               href="/essays"
               className="text-xs text-orange-700 hover:text-orange-800 font-medium"
             >
-              View all
+              Hamısı
             </Link>
           </div>
 
@@ -118,7 +112,7 @@ export function DashboardContent() {
                     <p className="text-sm font-medium text-stone-800 truncate group-hover:text-orange-700 transition-colors">
                       {essay.title}
                     </p>
-                    <p className="text-xs text-stone-400">{essay.wordCount} words</p>
+                    <p className="text-xs text-stone-400">{essay.wordCount} söz</p>
                   </div>
                   {essay.evaluation && (
                     <span className="text-sm font-bold ml-3 text-orange-700 shrink-0">
@@ -130,12 +124,12 @@ export function DashboardContent() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-sm text-stone-400 mb-3">No essays yet</p>
+              <p className="text-sm text-stone-400 mb-3">Hələki heç bir esse yoxdur.</p>
               <Link
                 href="/essays/new"
                 className="text-xs text-orange-700 font-medium hover:underline"
               >
-                Submit your first essay →
+                Birinci essenizi göndərin →
               </Link>
             </div>
           )}

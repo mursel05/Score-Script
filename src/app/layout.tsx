@@ -15,13 +15,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ScoreScript — Essay Checker",
-  description: "AI-powered essay evaluation with instant band score feedback",
+  title: "ScoreScript — Esse Yoxlayıcısı",
+  description: "AI tərəfindən gücləndirilmiş esse qiymətləndirməsi bal rəyi ilə",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSerif.variable} ${dmSans.variable}`}>
+    <html lang="az" className={`${dmSerif.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased bg-stone-50 text-stone-900 min-h-screen">
         <Providers>{children}</Providers>
       </body>

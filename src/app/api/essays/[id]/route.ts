@@ -9,13 +9,19 @@ export async function GET(
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "İstifadəçi təsdiqlənməyib", success: false },
+        { status: 401 }
+      );
     }
 
     const { id } = await params;
 
     if (!id || typeof id !== "string") {
-      return NextResponse.json({ error: "Invalid essay ID" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Səhv esse id", success: false },
+        { status: 400 }
+      );
     }
 
     const essay = await prisma.essay.findFirst({
@@ -27,10 +33,14 @@ export async function GET(
     });
 
     if (!essay) {
-      return NextResponse.json({ error: "Essay not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Esse tapılmadı", success: false },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
+      success: true,
       essay: {
         ...essay,
         createdAt: essay.createdAt.toISOString(),
@@ -44,9 +54,6 @@ export async function GET(
     });
   } catch (error) {
     console.error("GET /api/essays/[id] error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server xətası", success: false }, { status: 500 });
   }
 }

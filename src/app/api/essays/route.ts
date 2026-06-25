@@ -10,15 +10,19 @@ export async function POST(req: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "İstifadəçi təsdiqlənməyib", success: false },
+        { status: 401 }
+      );
     }
 
     const rateLimit = checkRateLimit(`essays:${session.user.id}`);
     if (!rateLimit.allowed) {
       return NextResponse.json(
         {
-          error: "Too many requests. Please wait before submitting another essay.",
+          error: "Çox sayda istək. Başqa bir esse göndərmədən əvvəl gözləyin.",
           resetAt: rateLimit.resetAt,
+          success: false,
         },
         {
           status: 429,
@@ -35,7 +39,7 @@ export async function POST(req: NextRequest) {
     const parsed = createEssaySchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Validation failed", details: z.treeifyError(parsed.error) },
+        { errors: z.treeifyError(parsed.error), success: false },
         { status: 400 }
       );
     }
@@ -65,8 +69,8 @@ export async function POST(req: NextRequest) {
       console.error("AI evaluation failed:", aiError);
       return NextResponse.json(
         {
-          essay: { ...essay, evaluation: null, createdAt: essay.createdAt.toISOString() },
-          warning: "Essay saved but evaluation failed. Please try again.",
+          error: "Esse saxlanıldı amma qiymətləndirmə uğursuz oldu. Yenidən cəhd edin.",
+          success: false,
         },
         { status: 207 }
       );
@@ -83,7 +87,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("POST /api/essays error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Server xətası", success: false }, { status: 500 });
   }
 }
 
@@ -91,7 +95,10 @@ export async function GET(req: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "İstifadəçi təsdiqlənməyib", success: false },
+        { status: 401 }
+      );
     }
 
     const { searchParams } = new URL(req.url);
@@ -111,6 +118,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     return NextResponse.json({
+      success: true,
       essays: essays.map((e) => ({
         ...e,
         createdAt: e.createdAt.toISOString(),
@@ -125,6 +133,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("GET /api/essays error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Server xətası", success: false }, { status: 500 });
   }
 }

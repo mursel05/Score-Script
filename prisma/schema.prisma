@@ -71,3 +71,11 @@ model Evaluation {
   createdAt   DateTime @default(now())
   essay       Essay    @relation(fields: [essayId], references: [id], onDelete: Cascade)
 }
+
+model Contact {
+  id        String   @id @default(cuid())
+  email     String
+  subject   String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}

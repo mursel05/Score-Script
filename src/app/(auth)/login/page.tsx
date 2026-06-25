@@ -15,11 +15,9 @@ export default function LoginPage() {
             <span className="font-serif text-xl text-stone-800">ScoreScript</span>
           </div>
 
-          <h1 className="text-xl font-semibold text-stone-900 mb-1">
-            Welcome back
-          </h1>
+          <h1 className="text-xl font-semibold text-stone-900 mb-1">Xoş gəldiniz</h1>
           <p className="text-sm text-stone-500 mb-7">
-            Sign in to check your essays
+            Essenizi yoxlamaq üçün giriş edin
           </p>
 
           <button
@@ -44,11 +42,11 @@ export default function LoginPage() {
                 fill="#EA4335"
               />
             </svg>
-            Continue with Google
+            Google ilə davam edin
           </button>
 
           <p className="text-xs text-stone-400 text-center mt-6 leading-relaxed">
-            By signing in you agree to our terms of service and privacy policy.
+            Giriş edərək xidmətlərimizin şərtləri və məxfilik siyasətini qəbul edirsiniz.
           </p>
         </div>
       </div>

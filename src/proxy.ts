@@ -13,13 +13,16 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/api/auth")) {
+  if (pathname.startsWith("/api/auth") || pathname.startsWith("/api/contact")) {
     return NextResponse.next();
   }
 
   if (!isAuthenticated) {
     if (pathname.startsWith("/api/")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "İstifadəçi təsdiqlənməyib", success: false },
+        { status: 401 }
+      );
     }
     return NextResponse.redirect(new URL("/login", req.url));
   }

@@ -30,7 +30,15 @@ function CustomTooltip({
   const band = payload[0].value;
 
   const getColor = (b: number) =>
-    b >= 8 ? "#22c55e" : b >= 7 ? "#84cc16" : b >= 6 ? "#eab308" : b >= 5 ? "#f97316" : "#ef4444";
+    b >= 8
+      ? "#22c55e"
+      : b >= 7
+        ? "#84cc16"
+        : b >= 6
+          ? "#eab308"
+          : b >= 5
+            ? "#f97316"
+            : "#ef4444";
 
   return (
     <div className="bg-stone-900 border border-stone-700 rounded-lg px-3 py-2 shadow-xl">
@@ -46,7 +54,7 @@ export function BandTrendChart({ data }: BandTrendChartProps) {
   if (!data.length) {
     return (
       <div className="flex items-center justify-center h-48 text-stone-400 text-sm">
-        No data yet. Submit your first essay to see trends.
+        Hələki məlumat yoxdur. İrəliləməni görmək üçün essenizi göndərin.
       </div>
     );
   }

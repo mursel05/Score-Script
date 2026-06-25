@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { PenLine, BarChart2, Zap, Shield } from "lucide-react";
+import ContactForm from "../contact/ContactForm";
 
 export function LandingHero() {
   return (
@@ -15,29 +16,23 @@ export function LandingHero() {
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
           className="text-sm text-stone-600 cursor-pointer hover:text-stone-900 px-4 py-2 rounded-lg border border-stone-300 hover:border-stone-400 transition-colors"
         >
-          Sign in
+          Giriş edin
         </button>
       </nav>
 
       <main className="max-w-6xl mx-auto px-6 pt-16 pb-24">
         <div className="max-w-2xl fade-up">
-          <div className="inline-flex items-center gap-2 text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 mb-8">
-            <Zap className="w-3 h-3" />
-            Powered by Google Gemini
-          </div>
-
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-stone-900 mb-6">
-            Know your
+            Essenizin
             <br />
-            essay&apos;s score
+            balını
             <br />
-            <span className="text-orange-700">instantly.</span>
+            <span className="text-orange-700">dərhal</span> bilin.
           </h1>
 
           <p className="text-lg text-stone-500 mb-10 leading-relaxed max-w-lg">
-            Paste your essay, get a band score in seconds. ScoreScript
-            evaluates your writing against professional criteria — the same
-            way examiners do.
+            Essenizinizi yapışdırın, bir neçə saniyə ərzində balı alın. ScoreScript
+            yazınızı peşəkar meyarlarla qiymətləndirir — imtahan edənlərin etdiyi kimi.
           </p>
 
           <button
@@ -62,7 +57,7 @@ export function LandingHero() {
                 fill="#EA4335"
               />
             </svg>
-            Continue with Google
+            Google ilə davam edin
           </button>
         </div>
 
@@ -70,18 +65,18 @@ export function LandingHero() {
           {[
             {
               icon: PenLine,
-              title: "Paste & Evaluate",
-              desc: "Submit up to 500 words and get an instant band score evaluated by AI.",
+              title: "Yapışdırın və Qiymətləndirin",
+              desc: "500 sözə qədər göndərmək imkanı və peşəkar qiymətləndirmə meyarları ilə bal alın.",
             },
             {
               icon: BarChart2,
-              title: "Track Progress",
-              desc: "See your score trends over time with a personal dashboard.",
+              title: "İrəliləməni İzləyin",
+              desc: "Şəxsi paneldə irəliləməni izləyin.",
             },
             {
               icon: Shield,
-              title: "Criteria-Based",
-              desc: "Scored strictly against professional evaluation criteria.",
+              title: "Meyarlara Əsaslanan",
+              desc: "Peşəkar qiymətləndirmə meyarlarına əsasən qiymətləndirilin.",
             },
           ].map(({ icon: Icon, title, desc }) => (
             <div
@@ -95,6 +90,16 @@ export function LandingHero() {
               <p className="text-sm text-stone-500 leading-relaxed">{desc}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-20">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.05] text-stone-900 mb-6 fade-up">
+            Əlaqə
+          </h2>
+          <p className="text-lg text-stone-500 mb-10 leading-relaxed fade-up-delay-1 fade-up">
+            Hər hansı sualınız, təklifiniz və ya rəyiniz varsa, aşağıdakı formdan istifadə
+            edərək bizimlə əlaqə saxlaya bilərsiniz. Biz tezliklə sizə cavab verəcəyik.
+          </p>
+          <ContactForm />
         </div>
       </main>
     </div>

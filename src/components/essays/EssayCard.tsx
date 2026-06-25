@@ -10,14 +10,14 @@ interface EssayCardProps {
 export function EssayCard({ essay }: EssayCardProps) {
   const band = essay.evaluation?.overallBand;
   const color = band != null ? getBandColor(band) : "#a8a29e";
-  const label = band != null ? getBandLabel(band) : "Pending";
+  const label = band != null ? getBandLabel(band) : "Gözlənir";
 
   return (
     <Link href={`/essays/${essay.id}`}>
       <div className="group bg-white border border-stone-200 rounded-xl p-5 hover:border-stone-300 hover:shadow-sm transition-all cursor-pointer">
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-stone-900 truncate mb-1 group-hover:text-orange-800 transition-colors">
+            <h3 className="font-medium text-stone-900 sm:truncate max-sm:line-clamp-1 mb-1 group-hover:text-orange-800 transition-colors">
               {essay.title}
             </h3>
             <p className="text-xs text-stone-400 line-clamp-2 leading-relaxed">
@@ -41,7 +41,7 @@ export function EssayCard({ essay }: EssayCardProps) {
         <div className="flex items-center gap-4 mt-4 text-xs text-stone-400">
           <span className="flex items-center gap-1">
             <Hash className="w-3 h-3" />
-            {essay.wordCount} words
+            {essay.wordCount} söz
           </span>
           <span className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
@@ -49,7 +49,7 @@ export function EssayCard({ essay }: EssayCardProps) {
           </span>
           <span className="flex items-center gap-1">
             <FileText className="w-3 h-3" />
-            {band != null ? "Evaluated" : "Pending"}
+            {band != null ? "Qiymətləndirildi" : "Gözlənir"}
           </span>
         </div>
       </div>

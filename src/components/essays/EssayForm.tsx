@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 import { countWords, MAX_WORD_COUNT, MIN_WORD_COUNT } from "@/src/lib/validations";
+import { fetcher } from "@/src/lib/api";
 
 export function EssayForm() {
   const router = useRouter();
@@ -31,26 +32,27 @@ export function EssayForm() {
         return;
       }
 
+      if (isSubmitting) {
+        return;
+      }
+
       setIsSubmitting(true);
       setErrors({});
 
       try {
-        const res = await fetch("/api/essays", {
+        const data = await fetcher("/essays", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title, content }),
         });
-
-        const data = await res.json();
-        if (res.ok) {
+        if (data.success) {
           router.push(`/essays/${data.essay.id}`);
           return;
         }
-        if (data.details && data.details.properties) {
-          setErrors(data.details.properties);
+        if (data.errors && data.errors.properties) {
+          setErrors(data.errors.properties);
         }
       } catch (err) {
-        toast.error("Something went wrong");
+        toast.error("Nəsə yanlış getdi");
       } finally {
         setIsSubmitting(false);
       }
@@ -62,35 +64,36 @@ export function EssayForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
         <label className="block text-xs font-medium text-stone-500 mb-2 uppercase tracking-wide">
-          Essay Title
+          Esse Başlığı
         </label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g. The impact of social media on society"
-          maxLength={200}
+          placeholder="Esse başlığınızı daxil edin…"
+          maxLength={1000}
           disabled={isSubmitting}
           className="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-orange-400 disabled:opacity-60"
         />
         {errors.title?.errors && (
-          <span style={{ color: "red" }}>{errors.title.errors[0]}</span>
+          <span className="text-red-500">{errors.title.errors[0]}</span>
         )}
       </div>
 
       <div>
         <label className="block text-xs font-medium text-stone-500 mb-2 uppercase tracking-wide">
-          Essay Content
+          Esse Məzmunu
         </label>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Paste or type your essay here…"
+          placeholder="Essenizi buraya yapışdırın və ya yazın…"
+          maxLength={5000}
           disabled={isSubmitting}
           className="essay-textarea w-full px-4 py-3 bg-white border border-stone-200 rounded-xl text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-orange-400 disabled:opacity-60 font-sans leading-relaxed"
         />
         {errors.content?.errors && (
-          <span style={{ color: "red" }}>{errors.content.errors[0]}</span>
+          <span className="text-red-500">{errors.content.errors[0]}</span>
         )}
         <div className="mt-2 space-y-1.5">
           <div className="flex items-center justify-between">
@@ -119,10 +122,10 @@ export function EssayForm() {
         {isSubmitting ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
-            Evaluating…
+            Qiymətləndirilir…
           </>
         ) : (
-          "Evaluate Essay"
+          "Qiymətləndirin"
         )}
       </button>
     </form>

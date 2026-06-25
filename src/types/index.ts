@@ -16,6 +16,7 @@ export interface EssayWithEvaluation {
 export interface DashboardStats {
   totalEssays: number;
   averageBand: number | null;
+  recentBand: number | null;
   recentEssays: EssayWithEvaluation[];
   bandTrend: { date: string; band: number }[];
 }
@@ -40,10 +41,10 @@ export function getBandColor(band: number): string {
 }
 
 export function getBandLabel(band: number): string {
-  if (band >= 5) return "Expert";
-  if (band >= 4.5) return "Very Good";
-  if (band >= 4) return "Competent";
-  if (band >= 3.5) return "Modest";
-  if (band >= 3) return "Limited";
-  return "Developing";
+  if (band >= 5) return "Mütəxəssis";
+  if (band >= 4.5) return "Çox Yaxşı";
+  if (band >= 4) return "Bacarıqlı";
+  if (band >= 3.5) return "Yaxşı";
+  if (band >= 3) return "Orta";
+  return "Başlanğıc";
 }

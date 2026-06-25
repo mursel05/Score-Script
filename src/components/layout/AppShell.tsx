@@ -3,12 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { LayoutDashboard, PenLine, ScrollText, LogOut, ChevronRight } from "lucide-react";
+import {
+  LayoutDashboard,
+  PenLine,
+  ScrollText,
+  LogOut,
+  ChevronRight,
+  PhoneIcon,
+} from "lucide-react";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/essays/new", label: "New Essay", icon: PenLine },
-  { href: "/essays", label: "History", icon: ScrollText },
+  { href: "/dashboard", label: "Panel", icon: LayoutDashboard },
+  { href: "/essays/new", label: "Yeni Esse", icon: PenLine },
+  { href: "/essays", label: "Tarix", icon: ScrollText },
+  { href: "/contact", label: "Əlaqə", icon: PhoneIcon },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -54,7 +62,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {session.user.image ? (
                 <img
                   src={session.user.image}
-                  alt={session.user.name || "User"}
+                  alt={session.user.name || "İstifadəçi"}
                   className="w-7 h-7 rounded-full"
                 />
               ) : (
@@ -63,15 +71,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-stone-800 truncate">
-                  {session.user.name || "User"}
+                <p
+                  className="text-xs font-medium text-stone-800 truncate"
+                  title={session.user.name || "İstifadəçi"}
+                >
+                  {session.user.name || "İstifadəçi"}
                 </p>
-                <p className="text-xs text-stone-400 truncate">{session.user.email}</p>
+                <p
+                  className="text-xs text-stone-400 truncate"
+                  title={session.user.email || ""}
+                >
+                  {session.user.email}
+                </p>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="text-stone-400 cursor-pointer hover:text-stone-600 transition-colors"
-                title="Sign out"
+                title="Çıxış et"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
