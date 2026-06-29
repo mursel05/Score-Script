@@ -49,13 +49,18 @@ export async function GET() {
       ]);
     const averageBand =
       evaluations.length > 0
-        ? evaluations.reduce((sum, e) => sum + e.overallBand, 0) / evaluations.length
+        ? evaluations.reduce(
+            (sum: number, e: { overallBand: number }) => sum + e.overallBand,
+            0
+          ) / evaluations.length
         : null;
 
-    const bandTrend = evaluations.slice(-30).map((e) => ({
-      date: e.createdAt.toISOString().split("T")[0],
-      band: e.overallBand,
-    }));
+    const bandTrend = evaluations
+      .slice(-30)
+      .map((e: { createdAt: Date; overallBand: number }) => ({
+        date: e.createdAt.toISOString().split("T")[0],
+        band: e.overallBand,
+      }));
 
     return NextResponse.json({
       success: true,

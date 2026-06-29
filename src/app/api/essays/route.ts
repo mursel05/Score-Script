@@ -119,16 +119,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      essays: essays.map((e) => ({
-        ...e,
-        createdAt: e.createdAt.toISOString(),
-        evaluation: e.evaluation
-          ? {
-              ...e.evaluation,
-              createdAt: e.evaluation.createdAt.toISOString(),
-            }
-          : null,
-      })),
+      essays,
       pagination: { page, limit, total, pages: Math.ceil(total / limit) },
     });
   } catch (error) {
