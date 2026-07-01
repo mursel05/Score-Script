@@ -4,16 +4,25 @@ import { auth } from "./lib/auth";
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isAuthenticated = !!req.auth?.user;
+  const isBlocked = req.auth?.user?.blocked;
 
-  const publicRoutes = ["/", "/login"];
+  if (isAuthenticated && isBlocked) {
+    const response = NextResponse.redirect(new URL("/blocked", req.url));
+    response.cookies.delete("authjs.session-token");
+    return response;
+  }
+
+  const publicRoutes = ["/", "/login", "/blocked"];
+  const publicApiRoutes = ["/api/auth", "/api/contact", "/api/leaderboard"];
+
   if (publicRoutes.includes(pathname)) {
-    if (isAuthenticated && pathname === "/login") {
+    if (isAuthenticated) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/api/auth") || pathname.startsWith("/api/contact")) {
+  if (publicApiRoutes.some((route) => pathname.startsWith(route))) {
     return NextResponse.next();
   }
 
@@ -32,6 +41,6 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

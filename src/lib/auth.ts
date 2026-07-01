@@ -18,6 +18,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
+    async signIn({ user }) {
+      if (!user.id) return true;
+      const dbUser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { blocked: true },
+      });
+      if (dbUser?.blocked) {
+        return "/blocked";
+      }
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { lastLogin: new Date() },
+      });
+      return true;
+    },
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;

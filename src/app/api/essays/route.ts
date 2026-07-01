@@ -6,31 +6,23 @@ import { prisma } from "@/src/lib/prisma";
 import { evaluateEssay } from "@/src/lib/gemini";
 import z from "zod";
 
+const DAILY_EVALUATE_COUNT = parseInt(process.env.DAILY_EVALUATE_COUNT || "10", 10);
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "İstifadəçi təsdiqlənməyib", success: false },
-        { status: 401 }
-      );
-    }
 
-    const rateLimit = checkRateLimit(`essays:${session.user.id}`);
-    if (!rateLimit.allowed) {
+    if (
+      session?.user?.evaluateCount >= DAILY_EVALUATE_COUNT &&
+      session?.user?.resetLimitAt &&
+      new Date(session.user.resetLimitAt) > new Date()
+    ) {
       return NextResponse.json(
         {
-          error: "Çox sayda istək. Başqa bir esse göndərmədən əvvəl gözləyin.",
-          resetAt: rateLimit.resetAt,
+          error: `Günlük qiymətləndirmə limitinizə çatdınız. Limit ${new Date(session.user.resetLimitAt).toLocaleTimeString()} UTC-də sıfırlanacaq.`,
           success: false,
         },
-        {
-          status: 429,
-          headers: {
-            "X-RateLimit-Remaining": "0",
-            "X-RateLimit-Reset": String(rateLimit.resetAt),
-          },
-        }
+        { status: 429 }
       );
     }
 
@@ -49,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     const essay = await prisma.essay.create({
       data: {
-        userId: session.user.id,
+        userId: session?.user?.id || "",
         title,
         content,
         wordCount,
@@ -76,6 +68,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    await prisma.user.update({
+      where: { id: session?.user?.id },
+      data: {
+        evaluateCount:
+          session?.user?.evaluateCount >= DAILY_EVALUATE_COUNT
+            ? 0
+            : session?.user?.evaluateCount + 1,
+        resetLimitAt: new Date(),
+      },
+    });
+
     return NextResponse.json({
       essay: {
         ...essay,
@@ -94,13 +97,6 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "İstifadəçi təsdiqlənməyib", success: false },
-        { status: 401 }
-      );
-    }
-
     const { searchParams } = new URL(req.url);
     const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
     const limit = Math.min(50, parseInt(searchParams.get("limit") || "10", 10));
@@ -108,13 +104,13 @@ export async function GET(req: NextRequest) {
 
     const [essays, total] = await prisma.$transaction([
       prisma.essay.findMany({
-        where: { userId: session.user.id },
+        where: { userId: session?.user?.id },
         include: { evaluation: true },
         orderBy: { createdAt: "desc" },
         skip,
         take: limit,
       }),
-      prisma.essay.count({ where: { userId: session.user.id } }),
+      prisma.essay.count({ where: { userId: session?.user?.id } }),
     ]);
 
     return NextResponse.json({

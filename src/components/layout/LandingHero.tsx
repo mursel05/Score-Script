@@ -91,7 +91,7 @@ export function LandingHero() {
             </div>
           ))}
         </div>
-        <div className="mt-20">
+        <div className="mt-20" id="contact">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.05] text-stone-900 mb-6 fade-up">
             Əlaqə
           </h2>

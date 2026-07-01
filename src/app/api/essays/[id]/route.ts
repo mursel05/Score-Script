@@ -8,13 +8,6 @@ export async function GET(
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "İstifadəçi təsdiqlənməyib", success: false },
-        { status: 401 }
-      );
-    }
-
     const { id } = await params;
 
     if (!id || typeof id !== "string") {
@@ -27,7 +20,7 @@ export async function GET(
     const essay = await prisma.essay.findFirst({
       where: {
         id,
-        userId: session.user.id,
+        userId: session?.user?.id,
       },
       include: { evaluation: true },
     });

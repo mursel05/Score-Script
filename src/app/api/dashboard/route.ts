@@ -5,14 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "İstifadəçi təsdiqlənməyib", success: false },
-        { status: 401 }
-      );
-    }
-
-    const userId = session.user.id;
+    const userId = session?.user?.id;
 
     const [totalEssays, evaluations, recentBand, recentEssays] =
       await prisma.$transaction([
