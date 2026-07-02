@@ -5,11 +5,13 @@ const ai = new GoogleGenAI({
 });
 
 export interface EvaluationResult {
-  criteriaA: number;
-  criteriaB: number;
-  criteriaC: number;
-  criteriaD: number;
-  overallBand: number;
+  criteriaA?: number;
+  criteriaB?: number;
+  criteriaC?: number;
+  criteriaD?: number;
+  overallBand?: number;
+  aiOutput: string;
+  error?: string;
 }
 
 const DEFAULT_SYSTEM_INSTRUCTION = `MAGİSTRATURAYA QƏBUL İMTAHANINDA XARİCİ DİL ÜZRƏ NAMİZƏDLƏRİN YAZDIQLARI ESSELƏRİN QİYMƏTLƏNDİRİLMƏ MEYARLARI
@@ -144,7 +146,6 @@ function isValidSubscore(value: unknown, allowed: number[]): value is number {
 }
 
 export async function evaluateEssay(content: string): Promise<EvaluationResult> {
-    throw new Error(`Invalid criteriaA value`);
   const sanitizedContent = sanitizeInput(content);
 
   const prompt = `Aşağıdaki esseni qiymətləndir və yalnız JSON formatında nəticəni qaytar:
@@ -175,20 +176,35 @@ Yalnız bunu qaytar: {"criteriaA": <0|0.5|1>, "criteriaB": <0|1|2>, "criteriaC":
   try {
     parsed = JSON.parse(cleaned);
   } catch {
-    throw new Error(`Failed to parse Gemini response as JSON: ${cleaned}`);
+    return {
+      error: `Failed to parse Gemini response as JSON: ${cleaned}`,
+      aiOutput: cleaned,
+    };
   }
 
   if (!isValidSubscore(parsed.criteriaA, VALID_A)) {
-    throw new Error(`Invalid criteriaA value: ${parsed.criteriaA}`);
+    return {
+      error: `Invalid criteriaA value: ${parsed.criteriaA}`,
+      aiOutput: cleaned,
+    };
   }
   if (!isValidSubscore(parsed.criteriaB, VALID_B)) {
-    throw new Error(`Invalid criteriaB value: ${parsed.criteriaB}`);
+    return {
+      error: `Invalid criteriaB value: ${parsed.criteriaB}`,
+      aiOutput: cleaned,
+    };
   }
   if (!isValidSubscore(parsed.criteriaC, VALID_C)) {
-    throw new Error(`Invalid criteriaC value: ${parsed.criteriaC}`);
+    return {
+      error: `Invalid criteriaC value: ${parsed.criteriaC}`,
+      aiOutput: cleaned,
+    };
   }
   if (!isValidSubscore(parsed.criteriaD, VALID_D)) {
-    throw new Error(`Invalid criteriaD value: ${parsed.criteriaD}`);
+    return {
+      error: `Invalid criteriaD value: ${parsed.criteriaD}`,
+      aiOutput: cleaned,
+    };
   }
 
   if (parsed.criteriaA === 0) {
@@ -205,5 +221,5 @@ Yalnız bunu qaytar: {"criteriaA": <0|0.5|1>, "criteriaB": <0|1|2>, "criteriaC":
 
   parsed.overallBand = Math.round(computedTotal * 2) / 2;
 
-  return parsed;
+  return { ...parsed, aiOutput: cleaned };
 }

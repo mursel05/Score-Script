@@ -16,6 +16,7 @@ model User {
   evaluateCount Int       @default(0)
   resetLimitAt  DateTime?
   blocked       Boolean   @default(false)
+  averageBand   Float     @default(0)
   lastLogin     DateTime  @default(now())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -73,6 +74,11 @@ model Evaluation {
   id          String   @id @default(cuid())
   essayId     String   @unique
   overallBand Float
+  criteriaA   Float
+  criteriaB   Float 
+  criteriaC   Float
+  criteriaD   Float
+  aiOutput    String   @db.Text
   createdAt   DateTime @default(now())
   essay       Essay    @relation(fields: [essayId], references: [id], onDelete: Cascade)
 }
